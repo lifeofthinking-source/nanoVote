@@ -1,0 +1,7 @@
+{
+  "name": "VoteSphere",
+  "description": "Organizational election management platform with election-scoped roles, eligibility validation, anonymous voting credentials, receipts, and tamper-evident audit trails.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
