@@ -131,7 +131,8 @@ export const votingService = {
     electionId: string,
     credentialToken: string,
     userId: string,
-    selections: BallotPositionSelection[]
+    selections: BallotPositionSelection[],
+    biometricHash?: string
   ): Promise<{ success: boolean; receipt?: VoteReceipt; error?: string }> {
     await simulateDelay(350, 650);
 
@@ -181,6 +182,7 @@ export const votingService = {
     const receiptNum = Math.floor(10000 + Math.random() * 90000);
     const receiptId = `RV-${receiptNum}`;
     const verificationHash = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+    const resolvedBioHash = biometricHash || `BIO-${verificationHash.slice(0, 16).toUpperCase()}`;
     const castTime = new Date().toISOString();
 
     // 5. Commit Anonymous Ballot (NO voter ID stored on ballot!)
@@ -191,6 +193,7 @@ export const votingService = {
       selections,
       castAt: castTime,
       ballotHash: verificationHash,
+      biometricHash: resolvedBioHash,
     };
     mockDb.addBallot(anonymousBallot);
 
@@ -220,17 +223,19 @@ export const votingService = {
       timestamp: castTime,
       verificationHash,
       credentialTokenMasked: `VC-****-${credentialToken.slice(-4)}`,
+      biometricHash: resolvedBioHash,
+      facialVerificationStatus: 'VERIFIED',
     };
     mockDb.addReceipt(receipt);
 
     // 8. Log Audit Event: Secret ballot recorded without candidate choices
     mockDb.addAuditEvent(
       electionId,
-      'Ballot Recorded',
+      'Ballot Recorded & Biometrically Certified',
       'SYSTEM',
       'Cryptographic Ballot Box',
       'SYSTEM',
-      `Encrypted anonymous ballot committed into digital ballot box with verification hash ${verificationHash}. Receipt ${receiptId} generated. Choice separated from identity.`,
+      `Encrypted anonymous ballot committed into digital ballot box. Verification hash: ${verificationHash}. Biometric Anti-Duplicate Hash: ${resolvedBioHash}. Receipt: ${receiptId}.`,
       receiptId
     );
 

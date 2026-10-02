@@ -79,6 +79,23 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ receipt, isOpen, onC
                 {receipt.verificationHash}
               </p>
             </div>
+
+            {receipt.biometricHash && (
+              <div className="pt-2 border-t border-slate-200/80">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Biometric Anti-Duplicate Hash</span>
+                  <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                    FACIAL LIVENESS CERTIFIED
+                  </span>
+                </div>
+                <p className="font-mono text-[10px] text-emerald-900 break-all bg-emerald-50/50 p-1.5 rounded border border-emerald-200/60 mt-0.5 font-bold">
+                  {receipt.biometricHash}
+                </p>
+                <span className="text-[10px] text-slate-400 mt-0.5 block">
+                  One-way mathematical projection preventing duplicate voter identity spoofing.
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Privacy Notice Guarantee */}

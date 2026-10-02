@@ -108,6 +108,7 @@ export interface AnonymousBallot {
   selections: BallotPositionSelection[];
   castAt: string;
   ballotHash: string;
+  biometricHash?: string;
 }
 
 export interface VoteReceipt {
@@ -118,6 +119,8 @@ export interface VoteReceipt {
   timestamp: string;
   verificationHash: string;
   credentialTokenMasked: string;
+  biometricHash?: string;
+  facialVerificationStatus?: 'VERIFIED' | 'BYPASSED' | 'PENDING';
 }
 
 export interface AuditEvent {
